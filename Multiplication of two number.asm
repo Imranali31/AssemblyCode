@@ -1,61 +1,38 @@
+.model small
+.stack 100h
+.data  
+    num1 db ?
+    nl db 0dh,0ah,"$"
+.code
+start:  
+    mov ax,@data
+    mov ds,ax
+    mov ah,1  
+    int 21h   
+    sub al,48
+    mov num1,al
+    
+    int 21h
+    sub al,48
+    mul num1
+    aam 
+    
+    add ah,48
+    add al,48
+    
+    mov bx,ax
+    
+    lea dx,nl
+    mov ah,9
+    int 21h
+    
+    mov ah,2
+    mov dl,bh
+    int 21h 
 
-.MODEL SMALL
-.STACK 100H
-.DATA
-NUM1 DB ?
-NUM2 DB ? 
-RESULT DB ?
-MSG1 DB 10,13,'ENTER FIRST NUMBER: $' 
-MSG2 DB 10,13,'ENTER SECOND NUMBER: $' 
-MSG3 DB 10,13,'AFTER MULTIPLYCATION RESULT IS: $' 
-.CODE
-MAIN PROC
-
-MOV AX,@DATA
-MOV DS,AX
-
-LEA DX,MSG1
-MOV AH,9
-INT 21H
-
-MOV AH,1
-INT 21H
-SUB AL,30H
-MOV NUM1,AL
-
-LEA DX,MSG2
-MOV AH,9
-INT 21H
-
-MOV AH,1
-INT 21H
-SUB AL,30H
-MOV NUM2,AL
-
-MUL NUM1
-
-MOV RESULT,AL
-AAM
-
-ADD AH,30H
-ADD AL,30H
-
-MOV BX,AX
-
-LEA DX,MSG3
-MOV AH,9
-INT 21H
-
-MOV AH,2
-MOV DL,BH
-INT 21H 
-
-MOV AH,2
-MOV DL,BL
-INT 21H
-
-MOV AH,4CH
-INT 21H 
-
-MAIN ENDP
-END MAIN 
+    mov dl,bl
+    int 21h
+    
+    mov ah,4ch
+    int 21
+    
