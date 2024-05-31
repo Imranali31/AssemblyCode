@@ -1,120 +1,82 @@
-.MODEL SMALL 
-.STACK 100H 
-.DATA 
-    MESSAGE DB 10, 13, "ENTER A NUMBER: $" 
-.CODE 
- 
-    MAIN: 
-        MOV AX, @DATA 
-        MOV DS, AX 
-         
-        LEA DX, MESSAGE 
-        MOV AH, 9 
-        INT 21H 
-         
-        MOV AH, 01H 
-        INT 21H 
-         
-        MOV CH, 10 
-        MOV CL, 00H       
-         
-        CMP AL, 3AH 
-        SUB AL, 30H 
-        MOV BH, AL 
-        MOV BL, 01H 
-  loop: 
-                    
-        MOV DL, 0DH 
-        MOV AH, 02H 
-        INT 21H            
-         
-        MOV DL, 0AH 
-        MOV AH, 02H 
-        INT 21H            
-         
-        MOV DL, '0' 
-        MOV AH, 02H 
-        INT 21H 
-         
-         
-        MOV DL, BH 
-        ADD DL, 30H 
-        MOV AH, 02H 
-        INT 21H 
-                
-        MOV DL,20h
-        MOV AH ,02h
-        INT 21H
-                
-        MOV DL, 58h
-        MOV AH, 02h 
-        INT 21H 
+.model small 
+.stack 100h
+.data 
+    nl db 13,10,"$"
+.code
+    start:
+        mov ax,@data
+        mov ds,ax
         
-        MOV DL,20h
-        MOV AH ,02h
-        INT 21H
-         
-        MOV AL, BL 
-        MUL BH 
-         
-        AAM 
-         
-        PUSH AX 
-        
-         
-        MOV AH, 00H 
-        MOV AL, BL 
-        AAA 
-         
-         
-         
-        MOV CL, AH 
-        MOV BL, AL 
-         
-         
-        MOV DL, CL 
-        ADD DL, 30H 
-        MOV AH, 02H 
-        INT 21H 
-         
-        MOV DL, BL 
-        ADD DL, 30H 
-        MOV AH, 02H 
-        INT 21H 
-         
-  RESULT:
-        MOV DL,20h
-        MOV AH ,02h
-        INT 21H    
-        MOV DL, '=' 
-        MOV AH, 02H 
-        INT 21H 
-        
-        MOV DL,20h
-        MOV AH ,02h
-        INT 21H        
-        POP AX 
-         
-        MOV DH, AL 
-        MOV DL, AH 
-        ADD DL, 30H 
-        MOV AH, 02H 
-        INT 21H 
-         
-        MOV DL, DH 
-        ADD DL, 30H 
-        MOV AH, 02H 
-        INT 21H  
-         
-        INC BL 
-        DEC CH 
-        CMP CH, 0 
-        JNE loop 
-
-         
    
-   EXIT:          
-        MOV AH, 04CH 
-        INT 21H
+        
+        
+        mov ah,1
+        int 21h
+        sub al,48
+        
+        mov ch,10
+        mov cl,0 
+        mov bh,al
+        mov bl,01h
+        
+        l1:
+           lea dx,nl
+           mov ah ,9
+           int 21h 
+           
+           mov dl,bh
+           add dl,48
+           mov ah,2
+           int 21h
+           
+           mov dl,"*"
+           int 21h
+           
+           mov al,bl
+           mul bh
+           aam
+           push ax
+           
+           mov ah,00h
+           mov al,bl
+           aaa
+           
+           mov cl,ah
+           mov bl,al 
+           
+           mov dl,cl
+           add dl,30h
+           mov ah,2h
+           int 21h 
+           
+           mov dl,bl
+           add dl,30h
+           mov ah,2h
+           int 21h
+           
+           
           
-   END MAIN 
+           
+           mov dl,'='
+           int 21h
+           
+           pop ax 
+           
+           mov dh,al
+           mov dl,ah
+           add dl,48
+           add dh,48
+           
+           mov ah,2
+           int  21h
+           mov dl,dh
+           int 21h
+           
+           inc bl
+           dec ch
+           cmp ch,0
+           jne l1
+     exit:
+         mov ah,4ch
+         int 21h
+           
